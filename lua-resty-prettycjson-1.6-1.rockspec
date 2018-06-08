@@ -1,16 +1,16 @@
 -- This file was automatically generated for the LuaDist project.
 
 package = "lua-resty-prettycjson"
-version = "1.5-1"
+version = "1.6-1"
 -- LuaDist source
 source = {
-  tag = "1.5-1",
+  tag = "1.6-1",
   url = "git://github.com/LuaDist-testing/lua-resty-prettycjson.git"
 }
 -- Original source
 -- source = {
 --     url = "git://github.com/bungle/lua-resty-prettycjson.git",
---     branch = "v1.5"
+--     branch = "v1.6"
 -- }
 description = {
     summary = "JSON Pretty Formatter for Lua cJSON",
