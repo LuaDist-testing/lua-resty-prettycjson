@@ -4,24 +4,15 @@ local sub = string.sub
 local rep = string.rep
 local json = require "cjson.safe".encode
 
-return function(tbl, linefeed, indent, after_colon)
-    local s, err = json(tbl)
-    if not s then
-        return s, err
-    end
-    local i, j, k  = 1, 0, 0
-    local r, p = {}, nil
-    local lf = linefeed or "\n"
-    local id = indent or "\t"
-    local ac = after_colon or " "
+return function(tbl, lf, id, ac)
+    local s, e = json(tbl)
+    if not s then return s, e end
+    lf, id, ac = lf or "\n", id or "\t", ac or " "
+    local i, j, k, r, p  = 1, 0, 0, {}, nil
     local al = sub(ac, -1) == "\n"
     for c in gmatch(s, ".") do
         if c == "{" or c == "[" then
-            if p == ":" then
-                r[i] = concat{ c, lf }
-            else
-                r[i] = concat{ rep(id, j), c, lf }
-            end
+            r[i] = p == ":" and concat{ c, lf } or concat{ rep(id, j), c, lf }
             j = j + 1
         elseif c == "}" or c == "]" then
             j = j - 1
@@ -42,14 +33,12 @@ return function(tbl, linefeed, indent, after_colon)
             end
         else
             if j ~= k then
-                r[i] = concat{ rep(id, j) }
-                i = i + 1
-                k = j
+                r[i] = rep(id, j)
+                i, k = i + 1, j
             end
             r[i] = c
         end
-        p = c
-        i = i + 1
+        p, i = c, i + 1
     end
     return concat(r)
 end
